@@ -1,0 +1,120 @@
+/* ============================================================
+   SHADOW REAPER — Responsive
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .right-panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    transform: translateX(100%);
+    z-index: 600;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .right-panel.open {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .mobile-only { display: flex !important; }
+
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    transform: translateX(-100%);
+    z-index: 600;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .chat-header {
+    padding: 0 10px;
+  }
+
+  .chat-messages {
+    padding: 12px 0;
+  }
+
+  .message {
+    padding: 10px 12px;
+  }
+
+  .chat-input-area {
+    padding: 8px 12px 12px;
+  }
+
+  .auth-panel {
+    margin: 16px;
+    padding: 28px 20px;
+  }
+
+  .admin-body {
+    padding: 14px;
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .system-status-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modal {
+    margin: 16px;
+  }
+
+  .boot-log {
+    min-width: 280px;
+    margin: 8px 16px;
+  }
+
+  .boot-progress-bar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .system-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .boot-title {
+    font-size: 20px;
+    letter-spacing: 4px;
+  }
+
+  .welcome-title {
+    font-size: 18px;
+    letter-spacing: 3px;
+  }
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8,9,13,0.6);
+  z-index: 590;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.visible {
+  display: block;
+}
+
+/* Panel header for mobile right panel */
+.panel-close-btn {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .panel-close-btn {
+    display: flex;
+  }
+}

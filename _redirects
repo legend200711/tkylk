@@ -1,0 +1,3 @@
+/* Redirects for SPA behavior */
+/* All routes → index.html for direct URL access */
+/*    /index.html   200

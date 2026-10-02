@@ -1,76 +1,36 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# 24-HOUR CLOUD ENGINE — Cloudflare Worker Configuration
-# cloud-engine/cloudflare/wrangler.toml
+# ============================================================
+# Cloudflare Wrangler Configuration — Shadow Reaper
+# Used for Cloudflare Pages deployment.
 #
-# STATUS: PLACEHOLDER — NOT YET DEPLOYED
-#
-# This Worker handles the Cloud Engine HTTP API (/api/cloud-engine/*).
-# It is deployed to the SAME Cloudflare account as Shadow Reaper,
-# but with completely separate:
-#   - Worker name
-#   - Route prefix (/api/cloud-engine/* vs Shadow Reaper's /api/v1/*)
-#   - Secrets (CE_* prefix — never SR_* vars)
-#   - KV namespaces
-#   - Bindings
-#
-# SHARED INFRASTRUCTURE:
-#   Same Cloudflare account as sr-standalone-api (Shadow Reaper).
-#   DO NOT add SR_* variables or bindings to this Worker.
-#   DO NOT add CE_* variables or bindings to the Shadow Reaper Worker.
-#
-# DEPLOYMENT STEPS (before running wrangler deploy):
-#   1. Set account_id below (from Cloudflare dashboard → Workers → Overview)
-#   2. Choose a Worker name (e.g. "ce-api" or "cloud-engine-api")
-#   3. Set secrets:
-#        wrangler secret put CE_SERVICE_TOKENS
-#        wrangler secret put CE_ALLOWED_ORIGIN
-#        wrangler secret put CE_FIREBASE_SERVICE_ACCOUNT
-#        wrangler secret put YOUTUBE_STREAM_KEY
-#   4. Create KV namespace:
-#        wrangler kv:namespace create CE_ENGINE_STATE
-#        (paste the returned id into [[kv_namespaces]] below)
-#   5. Run: npx wrangler deploy
-#
-# DO NOT DEPLOY until all steps above are completed.
-# ─────────────────────────────────────────────────────────────────────────────
+# DO NOT add secrets here. Use:
+#   wrangler secret put SECRET_NAME
+# or the Cloudflare dashboard → Pages → Settings → Environment Variables
+# ============================================================
 
-# name = "ce-api"                            # PLACEHOLDER — set Worker name
-# account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"  # PLACEHOLDER — same account as SR
+name = "shadow-reaper"
+compatibility_date = "2024-09-02"
 
-main = "cloudflare/worker/index.js"
-compatibility_date = "2025-01-01"
+# Pages project build settings
+[site]
+bucket = "./"          # Deploy project root as static site
 
-# ── Non-secret environment variables ─────────────────────────────────────────
+# ── R2 Bucket binding (for model asset delivery via Worker) ──
+# Uncomment if you deploy a Worker proxy for R2 model access.
+# [[r2_buckets]]
+# binding = "SHADOW_REAPER_MODELS"
+# bucket_name = "shadow-reaper-models"
+# preview_bucket_name = "shadow-reaper-models-preview"
+
+# ── Environment Variables (PUBLIC only — no secrets) ──────────
 [vars]
-CE_PROJECT       = "cloud-engine"
-CE_ENV           = "development"
-CE_ROUTE_PREFIX  = "/api/cloud-engine"
-# CE_ALLOWED_ORIGIN = "https://your-ce-domain.com"  # PLACEHOLDER (set as secret instead)
+ENVIRONMENT = "production"
+APP_NAME    = "Shadow Reaper"
 
-# ── KV Namespaces ─────────────────────────────────────────────────────────────
-# Uncomment after running: wrangler kv:namespace create CE_ENGINE_STATE
-# [[kv_namespaces]]
-# binding = "CE_ENGINE_STATE"
-# id      = "YOUR_CE_ENGINE_STATE_KV_NAMESPACE_ID"   # PLACEHOLDER
+# Public R2 URL — update with your account subdomain after
+# creating the R2 bucket.
+# R2_BASE_URL = "https://shadow-reaper-models.YOUR-ACCOUNT-ID.r2.dev"
 
-# ── Secrets (set via CLI — never in this file) ────────────────────────────────
-# wrangler secret put CE_SERVICE_TOKENS
-#   JSON registry: { [tokenHash]: { system: "SHADOW_REAPER"|"WEB_APP", active: true } }
-#
-# wrangler secret put CE_ALLOWED_ORIGIN
-#   Allowed CORS origin for the CE API
-#
-# wrangler secret put CE_FIREBASE_SERVICE_ACCOUNT
-#   Firebase service account JSON for remix-studio-4bf8a (AURENIX project)
-#   This is the AURENIX project service account — NOT the Shadow Reaper (ffr3r3223) key
-#
-# wrangler secret put YOUTUBE_STREAM_KEY
-#   YouTube RTMPS stream key — loaded at broadcast time only
-#
-# NEVER add SR_SERVICE_TOKENS or SR_INTERNAL_API_KEY to this Worker.
-# NEVER add CE_SERVICE_TOKENS or CE_FIREBASE_SERVICE_ACCOUNT to the SR Worker.
-
-# ── Route binding (uncomment when deploying to a domain) ─────────────────────
-# [[routes]]
-# pattern = "your-domain.com/api/cloud-engine/*"
-# zone_name = "your-domain.com"
+# ── Secrets — DO NOT put values here ──────────────────────────
+# Use:  wrangler secret put FIREBASE_PROJECT_ID
+# These secrets are only needed if you add a server-side Worker.
+# The browser-only deployment does NOT need server-side secrets.

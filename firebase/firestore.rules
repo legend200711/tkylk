@@ -1,0 +1,150 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper functions ──────────────────────────────────────────
+    function isAuthed()   { return request.auth != null; }
+    function isOwner(uid) { return isAuthed() && request.auth.uid == uid; }
+
+    // ═══════════════════════════════════════════════════════════════
+    // USER ROOT — STRICTLY UID-SCOPED
+    // One user may NEVER read or write another user's data.
+    // ═══════════════════════════════════════════════════════════════
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // ── Conversations ──────────────────────────────────────────
+      match /conversations/{convId} {
+        allow read, write: if isOwner(uid);
+
+        match /messages/{msgId} {
+          allow read, write: if isOwner(uid);
+        }
+      }
+
+      // ── Memories ──────────────────────────────────────────────
+      match /memories/{memId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Learned Knowledge ──────────────────────────────────────
+      match /learnedKnowledge/{knowledgeId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Preferences ───────────────────────────────────────────
+      match /preferences/{prefId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Emotional State ───────────────────────────────────────
+      match /emotionalState/{stateId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Projects ──────────────────────────────────────────────
+      match /projects/{projectId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Relationships ──────────────────────────────────────────
+      match /relationships/{relId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Corrections ───────────────────────────────────────────
+      match /corrections/{correctionId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Reflections (canonical) ────────────────────────────────
+      match /reflections/{reflectionId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Reflection History (legacy alias) ─────────────────────
+      match /reflectionHistory/{reflectionId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Learning Events ────────────────────────────────────────
+      match /learningEvents/{eventId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Personality ────────────────────────────────────────────
+      match /personality/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Mistake Memory ─────────────────────────────────────────
+      match /mistakes/{mistakeId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Project Brains ─────────────────────────────────────────
+      match /projectBrains/{projectId} {
+        allow read, write: if isOwner(uid);
+
+        match /entries/{entryId} {
+          allow read, write: if isOwner(uid);
+        }
+      }
+
+      // ── Confidence Data ────────────────────────────────────────
+      match /confidenceData/{conceptKey} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Curiosity Events ───────────────────────────────────────
+      match /curiosityEvents/{eventId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // ── Global Contribution Rate-limiting ─────────────────────
+      match /globalContributions/{windowId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // GLOBAL LEARNING CANDIDATES
+    // Any authenticated user may read and write candidates.
+    // ═══════════════════════════════════════════════════════════════
+    match /globalLearningCandidates/{conceptHash} {
+      allow read: if isAuthed();
+      allow create: if isAuthed()
+        && !request.resource.data.keys().hasAny(["uid", "userId", "ownerUid", "sourceUid"]);
+      allow update: if isAuthed()
+        && !request.resource.data.keys().hasAny(["uid", "userId", "ownerUid", "sourceUid"]);
+      allow delete: if false;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // GLOBAL KNOWLEDGE (promoted)
+    // Any authenticated user may read. Writes require verified fields.
+    // ═══════════════════════════════════════════════════════════════
+    match /globalKnowledge/{conceptHash} {
+      allow read: if isAuthed();
+      allow create: if isAuthed()
+        && request.resource.data.keys().hasAll([
+             "concept", "category", "confidence", "evidenceCount",
+             "privacyStatus", "version", "createdAt"
+           ])
+        && request.resource.data.privacyStatus == "verified"
+        && request.resource.data.confidence >= 0.5
+        && request.resource.data.evidenceCount >= 3
+        && !request.resource.data.keys().hasAny(["uid", "userId", "ownerUid", "sourceUid"]);
+      allow update: if isAuthed()
+        && !request.resource.data.keys().hasAny(["uid", "userId", "ownerUid", "sourceUid"]);
+      allow delete: if false;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DENY ALL OTHER ACCESS
+    // ═══════════════════════════════════════════════════════════════
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

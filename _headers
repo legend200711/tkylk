@@ -1,0 +1,63 @@
+# Cloudflare Pages Headers — Shadow Reaper
+# Production security headers + caching policy
+#
+# IMPORTANT: CSP must permit:
+#   - Firebase Auth/Firestore SDK (gstatic.com, googleapis.com, firebaseio.com)
+#   - WebLLM CDN (esm.run / cdn.jsdelivr.net)
+#   - Cloudflare R2 model assets (your-account-id.r2.dev or custom domain)
+#   - WebGPU (no external fetch — runs in browser)
+#
+# DO NOT use default-src *  — that defeats the purpose of CSP.
+
+# ── HTML (never cached) ────────────────────────────────────────
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh 'wasm-unsafe-eval'; script-src-elem 'self' https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh https://*.r2.dev wss://*.firebaseio.com https://huggingface.co https://*.huggingface.co https://raw.githubusercontent.com; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; child-src blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh 'wasm-unsafe-eval'; script-src-elem 'self' https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.gstatic.com https://cdn.jsdelivr.net https://esm.run https://esm.sh https://*.r2.dev wss://*.firebaseio.com https://huggingface.co https://*.huggingface.co https://raw.githubusercontent.com; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; child-src blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+# ── CSS (long-cached — content-hashed filenames in production) ─
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── Application JavaScript ─────────────────────────────────────
+/js/*
+  Cache-Control: public, max-age=86400
+
+/core/*
+  Cache-Control: public, max-age=86400
+
+/admin/*
+  Cache-Control: public, max-age=86400
+
+# ── Firebase config (no-cache — credentials may be rotated) ───
+/firebase/*
+  Cache-Control: no-cache, no-store
+
+# ── Storage / sync modules ─────────────────────────────────────
+/storage/*
+  Cache-Control: public, max-age=86400
+
+# ── Model manifest (short cache so updates propagate quickly) ──
+/model-manifest.json
+  Cache-Control: public, max-age=300
+
+# ── PWA manifest ───────────────────────────────────────────────
+/manifest.json
+  Cache-Control: no-cache
+
+# ── Cross-Origin isolation — required for WebGPU SharedArrayBuffer
+# Apply to every response.
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp

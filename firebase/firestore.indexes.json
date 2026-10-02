@@ -1,0 +1,61 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "memories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category",    "order": "ASCENDING"  },
+        { "fieldPath": "importance",  "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "memories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "project",    "order": "ASCENDING"  },
+        { "fieldPath": "importance", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "memories",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "memoryType", "order": "ASCENDING"  },
+        { "fieldPath": "updatedAt",  "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "learnedKnowledge",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category",   "order": "ASCENDING"  },
+        { "fieldPath": "confidence", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "learnedKnowledge",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "project",      "order": "ASCENDING"  },
+        { "fieldPath": "lastObserved", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "learnedKnowledge",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "project",    "order": "ASCENDING"  },
+        { "fieldPath": "confidence", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "relationships",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "fromConcept", "order": "ASCENDING" },
+        { "fieldPath": "type",        "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

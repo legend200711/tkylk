@@ -1,0 +1,201 @@
+/* ============================================================
+   SHADOW REAPER AI — Animations
+   ============================================================ */
+
+@keyframes sigil-pulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); filter: drop-shadow(0 0 6px rgba(0,255,136,0.4)); }
+  50%       { opacity: 1;    transform: scale(1.03); filter: drop-shadow(0 0 14px rgba(0,255,136,0.7)); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes blink-text {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes particle-float {
+  0%   { transform: translateY(0px) translateX(0px); opacity: 0; }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-120px) translateX(30px); opacity: 0; }
+}
+
+@keyframes energy-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(0,255,136,0.2); }
+  50%       { box-shadow: 0 0 12px rgba(0,255,136,0.5); }
+}
+
+@keyframes loading-bar {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+@keyframes thinking-dots {
+  0%   { content: '.'; }
+  33%  { content: '..'; }
+  66%  { content: '...'; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float linear infinite;
+}
+
+.message {
+  animation: fade-in 0.2s ease;
+}
+
+.admin-card {
+  animation: fade-in 0.25s ease;
+}
+
+/* Thinking indicator */
+.thinking-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+  animation: fade-in 0.2s ease;
+}
+
+.thinking-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.thinking-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: thinking-bounce 1.4s ease-in-out infinite;
+}
+
+.thinking-dot:nth-child(1) { animation-delay: 0s; }
+.thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes thinking-bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+  40%           { transform: scale(1); opacity: 1; box-shadow: 0 0 6px rgba(0,255,136,0.6); }
+}
+
+.thinking-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  animation: blink-text 2s ease-in-out infinite;
+}
+
+/* Boot screen particle */
+.boot-particle {
+  width: 2px;
+  height: 2px;
+  background: var(--accent-green);
+  opacity: 0;
+}
+
+/* Energy line effect */
+.energy-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+  pointer-events: none;
+  animation: energy-scan 3s linear infinite;
+}
+
+@keyframes energy-scan {
+  0%   { top: 0; opacity: 0; }
+  5%   { opacity: 0.4; }
+  95%  { opacity: 0.2; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Model loading bar */
+.model-loading-bar {
+  height: 1px;
+  background: var(--border-default);
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.model-loading-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+  animation: loading-bar 1.5s linear infinite;
+  width: 30%;
+}
+
+/* Scroll to bottom button */
+.scroll-bottom-btn {
+  position: absolute;
+  bottom: 80px;
+  right: 50%;
+  transform: translateX(50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  animation: fade-in 0.2s ease;
+  z-index: 10;
+  transition: all var(--transition);
+}
+
+.scroll-bottom-btn:hover { color: var(--text-primary); border-color: var(--accent-blue); }
+
+/* ─── ENERGY SCAN LINE (app-wide, very subtle) ────────────────── */
+.energy-scan-line {
+  position: fixed;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(30,111,255,0.15) 20%, rgba(0,255,136,0.1) 50%, rgba(30,111,255,0.15) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+  animation: app-energy-scan 8s linear infinite;
+}
+
+@keyframes app-energy-scan {
+  0%   { top: -2px; opacity: 0; }
+  3%   { opacity: 1; }
+  97%  { opacity: 0.4; }
+  100% { top: 100vh; opacity: 0; }
+}
+
+/* ─── PULSE GLOW animation ────────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(30,111,255,0.3); }
+  50%       { box-shadow: 0 0 12px rgba(30,111,255,0.7); }
+}

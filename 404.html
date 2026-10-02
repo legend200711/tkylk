@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shadow Reaper AI</title>
+  <!--
+    GitHub Pages SPA Fallback
+    ─────────────────────────
+    GitHub Pages serves this 404.html for any unmatched path.
+    This script stores the missing path in sessionStorage then redirects
+    to root index.html, which reads sessionStorage and restores the URL —
+    so the SPA handles client-side routing without a hard 404.
+
+    repoSegments = 1  (one path segment: "tkylk")
+  -->
+  <script>
+    var repoSegments = 1;
+    var l = window.location;
+    var rootPath = l.pathname.split('/').slice(0, 1 + repoSegments).join('/') + '/';
+    var remainingPath = '/' + l.pathname.slice(1).split('/').slice(repoSegments).join('/');
+    var redirectUrl = rootPath +
+      '?p=' + encodeURIComponent(remainingPath).replace(/%2F/g, '/') +
+      (l.search ? '&q=' + l.search.slice(1) : '') +
+      l.hash;
+    sessionStorage.setItem('__spa_redirect', remainingPath + (l.search || '') + (l.hash || ''));
+    l.replace(redirectUrl);
+  </script>
+</head>
+<body>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=/tkylk/" />
+    <p>Redirecting to <a href="/tkylk/">Shadow Reaper AI</a>…</p>
+  </noscript>
+</body>
+</html>

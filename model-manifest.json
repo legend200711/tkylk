@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0",
+  "id": "shadow-reaper-default",
+  "name": "Shadow Reaper Default",
+  "version": "1.0.0",
+  "engine": "webgpu",
+  "framework": "webllm",
+  "description": "Default WebLLM/MLC model bundle for Shadow Reaper adaptive AI",
+  "updatedAt": "2025-01-01T00:00:00Z",
+
+  "models": [
+    {
+      "id": "Llama-3.2-3B-Instruct-q4f16_1-MLC",
+      "label": "Llama 3.2 3B (Recommended)",
+      "tier": "medium",
+      "contextLength": 4096,
+      "webgpuRequired": true,
+      "minimumRequirements": {
+        "deviceMemoryGB": 6,
+        "webgpu": true,
+        "wasm": true
+      },
+      "notes": "Best balance of quality and speed for most devices"
+    },
+    {
+      "id": "Phi-3.5-mini-instruct-q4f16_1-MLC",
+      "label": "Phi 3.5 Mini (Efficient)",
+      "tier": "small",
+      "contextLength": 4096,
+      "webgpuRequired": false,
+      "minimumRequirements": {
+        "deviceMemoryGB": 4,
+        "webgpu": false,
+        "wasm": true
+      },
+      "notes": "Fallback model for devices without WebGPU"
+    },
+    {
+      "id": "Llama-3.1-8B-Instruct-q4f16_1-MLC",
+      "label": "Llama 3.1 8B (High Quality)",
+      "tier": "large",
+      "contextLength": 8192,
+      "webgpuRequired": true,
+      "minimumRequirements": {
+        "deviceMemoryGB": 12,
+        "webgpu": true,
+        "wasm": true
+      },
+      "notes": "High-quality model for capable devices"
+    },
+    {
+      "id": "gemma-2-2b-it-q4f16_1-MLC",
+      "label": "Gemma 2 2B (Fast)",
+      "tier": "small",
+      "contextLength": 4096,
+      "webgpuRequired": false,
+      "minimumRequirements": {
+        "deviceMemoryGB": 3,
+        "webgpu": false,
+        "wasm": true
+      },
+      "notes": "Fastest option for low-end devices"
+    }
+  ],
+
+  "r2BaseUrl": "https://shadow-reaper-models.YOUR-ACCOUNT-ID.r2.dev",
+
+  "modelDirectory": {
+    "structure": "/models/{modelId}/",
+    "subdirectories": ["config", "tokenizer", "weights"],
+    "manifestFile": "/models/{modelId}/manifest.json"
+  },
+
+  "caching": {
+    "strategy": "webllm-managed",
+    "notes": "WebLLM manages its own browser cache (Cache API). Do not re-download unless version changes."
+  },
+
+  "notes": [
+    "Models are served directly from Cloudflare R2.",
+    "WebLLM handles download, caching, and WebGPU initialization.",
+    "Do not hardcode model URLs. Use this manifest to determine available models.",
+    "Update 'version' and 'updatedAt' when publishing new model weights.",
+    "R2 URL must be updated with your actual Cloudflare account subdomain."
+  ]
+}

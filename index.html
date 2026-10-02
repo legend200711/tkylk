@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- GitHub Pages SPA redirect receiver (paired with 404.html fallback) -->
+  <script>
+    (function() {
+      var redirect = sessionStorage.getItem('__spa_redirect');
+      if (redirect) {
+        sessionStorage.removeItem('__spa_redirect');
+        // Silently restore the original URL without a page reload
+        window.history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#08090d" />
+  <meta name="description" content="Shadow Reaper AI — Adaptive Intelligence System" />
+  <title>Shadow Reaper AI</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./css/shadow-reaper.css" />
+  <link rel="stylesheet" href="./css/animations.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+</head>
+<body>
+  <!-- Boot Screen -->
+  <div id="boot-screen" class="boot-screen">
+    <div class="boot-particles" id="boot-particles"></div>
+    <!-- Ambient fog -->
+    <div class="boot-fog"></div>
+    <!-- Lightning effects -->
+    <div class="boot-lightning" id="boot-lightning"></div>
+    <div class="boot-content">
+      <div class="boot-sigil">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="reaper-sigil">
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-blue">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Outer triangle — neon green -->
+          <polygon points="60,8 112,90 8,90" fill="none" stroke="#00ff88" stroke-width="1.5" filter="url(#glow)" opacity="0.9"/>
+          <!-- Inner triangle — electric blue -->
+          <polygon points="60,30 92,80 28,80" fill="none" stroke="#1e6fff" stroke-width="1" filter="url(#glow-blue)" opacity="0.7"/>
+          <!-- Core circle -->
+          <circle cx="60" cy="60" r="12" fill="none" stroke="#00ff88" stroke-width="1.5" filter="url(#glow)"/>
+          <!-- Inner pulse -->
+          <circle cx="60" cy="60" r="5" fill="#00ff88" opacity="0.5" filter="url(#glow)"/>
+          <!-- Energy lines -->
+          <line x1="60" y1="8" x2="60" y2="40" stroke="#00ff88" stroke-width="1" opacity="0.5"/>
+          <line x1="112" y1="90" x2="84" y2="74" stroke="#00ff88" stroke-width="1" opacity="0.5"/>
+          <line x1="8" y1="90" x2="36" y2="74" stroke="#00ff88" stroke-width="1" opacity="0.5"/>
+          <!-- Blue cross-lines -->
+          <line x1="28" y1="80" x2="92" y2="80" stroke="#1e6fff" stroke-width="0.5" opacity="0.4"/>
+          <line x1="60" y1="30" x2="60" y2="80" stroke="#1e6fff" stroke-width="0.5" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="boot-title">SHADOW REAPER AI</div>
+      <div class="boot-subtitle">ADAPTIVE INTELLIGENCE SYSTEM</div>
+      <div class="boot-log" id="boot-log">
+        <!-- Boot lines are dynamically injected by app.js -->
+      </div>
+      <div class="boot-progress-bar">
+        <div class="boot-progress-fill" id="boot-progress"></div>
+      </div>
+      <div class="boot-status" id="boot-status">INITIALIZING</div>
+    </div>
+  </div>
+
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="auth-screen hidden">
+    <div class="auth-particles"></div>
+    <div class="auth-fog"></div>
+    <div class="auth-panel">
+      <div class="auth-logo">
+        <div class="auth-sigil-small">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+            <defs>
+              <filter id="glow-sm">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <polygon points="30,4 56,45 4,45" fill="none" stroke="#00ff88" stroke-width="1.5" filter="url(#glow-sm)"/>
+            <polygon points="30,15 46,40 14,40" fill="none" stroke="#1e6fff" stroke-width="1" filter="url(#glow-sm)" opacity="0.7"/>
+            <circle cx="30" cy="30" r="6" fill="none" stroke="#00ff88" stroke-width="1.5" filter="url(#glow-sm)"/>
+          </svg>
+        </div>
+        <div class="auth-title">SHADOW REAPER AI</div>
+        <div class="auth-subtitle-line">ADAPTIVE INTELLIGENCE SYSTEM</div>
+      </div>
+      <div id="auth-error" class="auth-error hidden"></div>
+      <div id="auth-form-login" class="auth-form">
+        <h2 class="auth-heading">AUTHENTICATE</h2>
+        <div class="form-group">
+          <label>EMAIL</label>
+          <input type="email" id="login-email" placeholder="operator@domain.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>PASSWORD</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn-primary" id="btn-login">ACCESS SYSTEM</button>
+        <button class="btn-ghost" id="btn-show-register">CREATE ACCOUNT</button>
+        <button class="btn-ghost" id="btn-show-reset" style="font-size:11px;margin-top:4px;">FORGOT PASSWORD</button>
+      </div>
+
+      <!-- Password Reset Form -->
+      <div id="auth-form-reset" class="auth-form hidden">
+        <h2 class="auth-heading">RESET ACCESS</h2>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Enter your email to receive a reset link.</p>
+        <div class="form-group">
+          <label>EMAIL</label>
+          <input type="email" id="reset-email" placeholder="operator@domain.com" autocomplete="email" />
+        </div>
+        <button class="btn-primary" id="btn-send-reset">SEND RESET LINK</button>
+        <button class="btn-ghost" id="btn-back-to-login">BACK TO LOGIN</button>
+        <div id="reset-success" class="auth-error hidden" style="background:rgba(0,255,136,0.1);border-color:#00ff88;color:#00ff88;"></div>
+      </div>
+      <div id="auth-form-register" class="auth-form hidden">
+        <h2 class="auth-heading">CREATE OPERATOR</h2>
+        <div class="form-group">
+          <label>EMAIL</label>
+          <input type="email" id="reg-email" placeholder="operator@domain.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>PASSWORD</label>
+          <input type="password" id="reg-password" placeholder="Min 8 characters" autocomplete="new-password" />
+        </div>
+        <div class="form-group">
+          <label>DISPLAY NAME</label>
+          <input type="text" id="reg-name" placeholder="Your name" autocomplete="name" />
+        </div>
+        <button class="btn-primary" id="btn-register">INITIALIZE OPERATOR</button>
+        <button class="btn-ghost" id="btn-show-login">BACK TO LOGIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="app hidden">
+    <!-- Ambient background effects -->
+    <div class="app-ambient" id="app-ambient"></div>
+
+    <!-- Left Panel: Conversation History -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <span class="sidebar-sigil">▲</span>
+          SHADOW REAPER AI
+        </div>
+        <button class="btn-icon" id="btn-new-chat" title="New Conversation">+</button>
+      </div>
+      <div class="sidebar-search">
+        <input type="text" id="search-conversations" placeholder="Search conversations..." />
+      </div>
+      <div class="conversation-list" id="conversation-list"></div>
+      <div class="sidebar-footer">
+        <button class="btn-sidebar-nav" id="btn-shadow-core">◈ SHADOW CORE</button>
+        <button class="btn-sidebar-nav" id="btn-shadow-brain">◈ MY SHADOW BRAIN</button>
+        <button class="btn-sidebar-nav" id="btn-project-brains">◎ PROJECT BRAINS</button>
+        <button class="btn-sidebar-nav" id="btn-global-learning">◎ GLOBAL LEARNING</button>
+        <button class="btn-sidebar-nav" id="btn-knowledge-center">◎ KNOWLEDGE</button>
+        <button class="btn-sidebar-nav" id="btn-learning-dashboard">◉ LEARNING</button>
+        <button class="btn-sidebar-nav" id="btn-sign-out">⏻ SIGN OUT</button>
+      </div>
+    </aside>
+
+    <!-- Center Panel: Chat -->
+    <main id="chat-panel" class="chat-panel">
+      <div class="chat-header">
+        <button class="btn-icon mobile-only" id="btn-toggle-sidebar">☰</button>
+        <div class="chat-title" id="chat-title">NEW CONVERSATION</div>
+        <div class="chat-header-controls">
+          <span class="model-status" id="model-status-badge">MODEL LOADING</span>
+          <button class="btn-icon" id="btn-toggle-right-panel" title="Toggle Info Panel">◧</button>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-welcome" id="chat-welcome">
+          <div class="welcome-sigil-wrap">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="welcome-sigil-svg">
+              <defs>
+                <filter id="glow-w">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <polygon points="60,8 112,90 8,90" fill="none" stroke="#00ff88" stroke-width="2" filter="url(#glow-w)" opacity="0.9"/>
+              <polygon points="60,28 94,82 26,82" fill="none" stroke="#1e6fff" stroke-width="1.2" filter="url(#glow-w)" opacity="0.6"/>
+              <circle cx="60" cy="58" r="14" fill="none" stroke="#00ff88" stroke-width="1.5" filter="url(#glow-w)"/>
+              <circle cx="60" cy="58" r="5" fill="#00ff88" opacity="0.6" filter="url(#glow-w)"/>
+            </svg>
+          </div>
+          <div class="welcome-title">SHADOW REAPER AI</div>
+          <div class="welcome-subtitle">Adaptive Intelligence System — Local Processing</div>
+          <div class="welcome-hints">
+            <div class="hint-item">Your private brain learns and adapts to you personally</div>
+            <div class="hint-item">Create Project Brains for websites, apps, and business contexts</div>
+            <div class="hint-item">All memory is yours — inspect and control it in MY SHADOW BRAIN</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div class="learning-activity-bar" id="learning-activity-bar"></div>
+        <div class="input-container">
+          <textarea id="message-input" placeholder="Speak to Shadow Reaper AI..." rows="1" maxlength="8000"></textarea>
+          <div class="input-controls">
+            <!-- Checkpoint D: mic button (hidden if unavailable) -->
+            <button class="btn-icon btn-mic" id="btn-mic" title="Voice input" style="display:none;">🎤</button>
+            <!-- Checkpoint D: TTS toggle (hidden if unavailable) -->
+            <button class="btn-icon btn-tts-toggle" id="btn-tts-toggle" title="Toggle voice output" style="display:none;">🔇</button>
+            <button class="btn-send" id="btn-send" disabled>
+              <span id="send-icon">▶</span>
+            </button>
+            <button class="btn-stop hidden" id="btn-stop">■</button>
+          </div>
+        </div>
+        <div class="input-footer">
+          <span class="char-count" id="char-count">0 / 8000</span>
+          <span class="model-info" id="model-info-footer">Initializing local model...</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Panel: Shadow Info -->
+    <aside id="right-panel" class="right-panel">
+      <div class="right-panel-tabs">
+        <button class="tab-btn active" data-tab="state">STATE</button>
+        <button class="tab-btn" data-tab="memory">MEMORY</button>
+        <button class="tab-btn" data-tab="activity">ACTIVITY</button>
+        <button class="tab-btn" data-tab="context">CONTEXT</button>
+        <button class="tab-btn" data-tab="controls">CONTROLS</button>
+      </div>
+      <div class="tab-content" id="tab-state">
+        <div class="panel-section">
+          <div class="section-label">SHADOW REAPER STATE</div>
+          <div id="sr-state-badge" class="info-value" data-state="idle">IDLE</div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">EMOTIONAL STATE</div>
+          <div id="emotion-display" class="emotion-display"></div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">ACTIVE PROJECT</div>
+          <div id="active-project-display" class="info-value">—</div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">SESSION MEMORIES</div>
+          <div id="session-memory-count" class="info-value">0</div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">GLOBAL LEARNING</div>
+          <div id="global-learning-status" class="info-value" style="font-size:11px;">—</div>
+        </div>
+      </div>
+      <div class="tab-content hidden" id="tab-memory">
+        <div class="panel-section">
+          <div class="section-label">RELEVANT MEMORIES</div>
+          <div id="relevant-memories-display" class="memory-list"></div>
+        </div>
+      </div>
+      <div class="tab-content hidden" id="tab-activity">
+        <div class="panel-section">
+          <div class="section-label">LEARNING ACTIVITY</div>
+          <div id="learning-activity-display" class="activity-log"></div>
+        </div>
+      </div>
+      <div class="tab-content hidden" id="tab-context">
+        <div class="panel-section">
+          <div class="section-label">CONTEXT BUILT</div>
+          <div id="context-display" class="context-preview"></div>
+        </div>
+      </div>
+      <!-- Checkpoint E: Controls Tab -->
+      <div class="tab-content hidden" id="tab-controls">
+        <div class="panel-section">
+          <div class="section-label">LEARNING &amp; HISTORY</div>
+          <div class="control-row">
+            <label class="control-label">Personal learning</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-learning" checked />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="control-row">
+            <label class="control-label">Conversation history</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-history" checked />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="control-row">
+            <label class="control-label">Global learning</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-global-learning" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">VOICE</div>
+          <div class="control-row">
+            <label class="control-label">Voice output (TTS)</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-speech" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div class="control-row">
+            <label class="control-label">Auto-speak responses</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggle-autospeak" />
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+          <div id="voice-settings-panel" style="margin-top:8px;">
+            <div class="control-row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+              <label class="control-label">Speech rate: <span id="speech-rate-val">1.0</span></label>
+              <input type="range" id="speech-rate" min="0.5" max="2.0" step="0.1" value="1.0" style="width:100%;" />
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <div class="section-label">TRANSPARENCY</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">
+            Use the <strong>WHY?</strong> button on any response to see exactly what memories,
+            knowledge, and project context shaped it.
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Admin Overlays (lazy loaded) -->
+  <div id="overlay-container"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
