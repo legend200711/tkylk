@@ -1,0 +1,443 @@
+/**
+ * 24-HOUR CLOUD ENGINE — Screen-Specific Styles
+ * cloud-engine-ui/css/ce-screens.css
+ */
+
+/* ═══════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════ */
+.ce-dashboard-status-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+  margin-bottom: 16px;
+}
+
+.ce-dashboard-status-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ce-dashboard-status-icon svg { width: 22px; height: 22px; }
+
+.ce-status-icon-live     { background: var(--ce-live-dim);  color: var(--ce-live);  }
+.ce-status-icon-offline  { background: rgba(71,85,105,0.25);color: var(--ce-offline);}
+.ce-status-icon-error    { background: var(--ce-error-dim); color: var(--ce-error); }
+.ce-status-icon-ready    { background: var(--ce-accent-dim);color: var(--ce-accent);}
+
+.ce-dashboard-status-info { flex: 1; min-width: 0; }
+.ce-dashboard-status-state {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.ce-dashboard-status-detail {
+  font-size: 12px;
+  color: var(--ce-text-muted);
+  margin-top: 3px;
+}
+
+/* Quick action buttons on dashboard */
+.ce-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+/* Dashboard module health grid */
+.ce-health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.ce-health-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  font-size: 12px;
+}
+
+.ce-health-item-name {
+  font-weight: 500;
+  color: var(--ce-text);
+}
+
+/* ═══════════════════════════════════
+   BROADCAST STUDIO
+═══════════════════════════════════ */
+.ce-studio-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+.ce-studio-main { display: flex; flex-direction: column; gap: 16px; }
+.ce-studio-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+.ce-studio-preview {
+  background: #000;
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.ce-studio-preview-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--ce-text-faint);
+  font-size: 12px;
+}
+.ce-studio-preview-inner svg { width: 40px; height: 40px; stroke: var(--ce-text-faint); }
+
+.ce-studio-preview-live-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--ce-error);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.ce-studio-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════
+   DESTINATION CARDS
+═══════════════════════════════════ */
+.ce-destination-card {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+  padding: 16px 18px;
+}
+.ce-destination-card.active { border-color: rgba(34,197,94,0.3); }
+.ce-destination-card.error  { border-color: rgba(239,68,68,0.3); }
+.ce-destination-card.warn   { border-color: rgba(245,158,11,0.3); }
+
+.ce-destination-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ce-destination-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ce-text-heading);
+}
+
+.ce-destination-meta {
+  font-size: 11px;
+  color: var(--ce-text-muted);
+  font-family: var(--ce-font-mono);
+}
+
+.ce-destination-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ce-border);
+}
+
+/* ═══════════════════════════════════
+   PLATFORM CONNECTION CARDS
+═══════════════════════════════════ */
+.ce-platform-card {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ce-platform-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ce-platform-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+.ce-platform-logo-youtube  { background: rgba(255,0,0,0.15); color: #f87171; }
+.ce-platform-logo-twitch   { background: rgba(145,71,255,0.15); color: #c084fc; }
+.ce-platform-logo-facebook { background: rgba(24,119,242,0.15); color: #60a5fa; }
+.ce-platform-logo-rtmp     { background: rgba(100,116,139,0.15); color: #94a3b8; }
+
+.ce-platform-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ce-text-heading);
+}
+
+.ce-platform-capabilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 10px;
+}
+
+.ce-capability-tag {
+  padding: 2px 7px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--ce-border);
+  border-radius: 100px;
+  color: var(--ce-text-muted);
+  font-size: 10px;
+}
+
+/* ═══════════════════════════════════
+   MEDIA LIBRARY
+═══════════════════════════════════ */
+.ce-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.ce-media-item {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.ce-media-item:hover { border-color: var(--ce-border-med); }
+.ce-media-item.selected { border-color: var(--ce-accent); }
+
+.ce-media-thumb {
+  background: #000;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ce-text-faint);
+}
+.ce-media-thumb svg { width: 32px; height: 32px; }
+
+.ce-media-info { padding: 10px 12px; }
+.ce-media-title { font-size: 12px; font-weight: 500; color: var(--ce-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ce-media-meta  { font-size: 10px; color: var(--ce-text-muted); margin-top: 3px; font-family: var(--ce-font-mono); }
+
+/* ═══════════════════════════════════
+   TV STATION
+═══════════════════════════════════ */
+.ce-station-now-playing {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+  padding: 18px 22px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.ce-station-on-air-badge {
+  background: var(--ce-error);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ce-station-program-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ce-text-heading);
+}
+.ce-station-program-meta {
+  font-size: 11px;
+  color: var(--ce-text-muted);
+  margin-top: 3px;
+}
+
+.ce-station-program-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 10px 16px;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* ═══════════════════════════════════
+   SCHEDULE
+═══════════════════════════════════ */
+.ce-schedule-entry {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  font-size: 13px;
+}
+.ce-schedule-time { font-family: var(--ce-font-mono); color: var(--ce-text-muted); font-size: 12px; }
+.ce-schedule-title { font-weight: 500; color: var(--ce-text); }
+
+/* ═══════════════════════════════════
+   HYBRID MODE
+═══════════════════════════════════ */
+.ce-hybrid-state-card {
+  text-align: center;
+  padding: 32px 24px;
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius-lg);
+}
+
+.ce-hybrid-state-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ce-text-muted);
+  margin-bottom: 10px;
+}
+
+.ce-hybrid-state-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ce-hybrid-state-station  { color: var(--ce-accent); }
+.ce-hybrid-state-live     { color: var(--ce-live); }
+.ce-hybrid-state-returning{ color: var(--ce-warn); }
+.ce-hybrid-state-error    { color: var(--ce-error); }
+.ce-hybrid-state-offline  { color: var(--ce-offline); }
+
+.ce-hybrid-resume-strategy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ce-hybrid-strategy-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--ce-bg-input);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  cursor: pointer;
+  font-size: 12px;
+  transition: border-color 0.15s;
+}
+.ce-hybrid-strategy-option:hover { border-color: var(--ce-border-med); }
+.ce-hybrid-strategy-option.selected { border-color: var(--ce-accent); background: var(--ce-bg-active); }
+
+/* ═══════════════════════════════════
+   MONITORING
+═══════════════════════════════════ */
+.ce-monitor-component {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.ce-monitor-name {
+  font-weight: 500;
+  color: var(--ce-text);
+  min-width: 100px;
+}
+
+.ce-monitor-detail {
+  flex: 1;
+  font-size: 11px;
+  color: var(--ce-text-muted);
+  font-family: var(--ce-font-mono);
+}
+
+/* ═══════════════════════════════════
+   RECOVERY
+═══════════════════════════════════ */
+.ce-recovery-item {
+  background: var(--ce-bg-card);
+  border: 1px solid var(--ce-border);
+  border-radius: var(--ce-radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+}
+
+.ce-recovery-component { font-weight: 600; color: var(--ce-text-heading); margin-bottom: 4px; }
+.ce-recovery-detail { font-size: 11px; color: var(--ce-text-muted); font-family: var(--ce-font-mono); }
+
+/* ═══════════════════════════════════
+   NOT IMPLEMENTED NOTICE
+═══════════════════════════════════ */
+.ce-arch-notice {
+  background: rgba(100,116,139,0.08);
+  border: 1px solid rgba(100,116,139,0.2);
+  border-radius: var(--ce-radius);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+.ce-arch-notice svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; margin-top: 1px; }

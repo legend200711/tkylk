@@ -1,0 +1,168 @@
+/**
+ * 24-HOUR CLOUD ENGINE — Responsive CSS
+ * cloud-engine-ui/css/ce-responsive.css
+ */
+
+/* ═══════════════════════════════════
+   TABLET (max 1024px)
+═══════════════════════════════════ */
+@media (max-width: 1024px) {
+  .ce-studio-layout {
+    grid-template-columns: 1fr;
+  }
+  .ce-studio-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .ce-grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ═══════════════════════════════════
+   MOBILE (max 768px)
+═══════════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --ce-nav-width: 100%;
+  }
+
+  .ce-app-shell {
+    flex-direction: column;
+  }
+
+  /* Nav becomes horizontal bottom bar on mobile */
+  .ce-nav {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--ce-border);
+    z-index: 300;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .ce-nav-header,
+  .ce-nav-footer,
+  .ce-nav-engine-status,
+  .ce-nav-divider,
+  .ce-nav-brand,
+  .ce-nav-toggle {
+    display: none;
+  }
+
+  .ce-nav-list {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex: 1;
+  }
+  .ce-nav-list::-webkit-scrollbar { display: none; }
+
+  .ce-nav-link {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 14px;
+    font-size: 10px;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .ce-nav-link svg { width: 20px; height: 20px; }
+  .ce-nav-link::before { display: none; }
+  .ce-nav-link.active {
+    background: var(--ce-bg-active);
+    border-radius: 0;
+  }
+
+  .ce-main {
+    padding-bottom: 72px; /* account for fixed bottom nav */
+  }
+
+  .ce-screen-header,
+  .ce-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ce-studio-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .ce-grid-2,
+  .ce-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .ce-metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ce-health-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ce-media-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ce-schedule-entry {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .ce-toast-area {
+    left: 12px;
+    right: 12px;
+    bottom: 84px;
+    max-width: 100%;
+  }
+
+  .ce-dialog {
+    margin: 0 4px;
+  }
+
+  .ce-auth-gate {
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+}
+
+/* ═══════════════════════════════════
+   VERY SMALL (max 420px)
+═══════════════════════════════════ */
+@media (max-width: 420px) {
+  .ce-metric-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ce-media-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ce-quick-actions {
+    flex-direction: column;
+  }
+  .ce-studio-controls {
+    flex-wrap: wrap;
+  }
+}
+
+/* ═══════════════════════════════════
+   PRINT (hide nav)
+═══════════════════════════════════ */
+@media print {
+  .ce-nav,
+  .ce-toast-area,
+  .ce-overlay { display: none !important; }
+  .ce-main { padding: 0; }
+}
