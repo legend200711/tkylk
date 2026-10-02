@@ -1,0 +1,28 @@
+{
+  "name": "24-hour-cloud-engine",
+  "version": "0.13.0",
+  "description": "24-Hour Cloud Engine — Stage 13 — Multi-User Security + Isolation Hardening",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test:encoder":    "node encoder/tests/shadow-encoder.test.js",
+    "test:broadcast":  "node broadcast/tests/broadcast.test.js",
+    "test:fanout":     "node broadcast/tests/fanout.test.js",
+    "test:ingest":     "node ingest/tests/ingest.test.js",
+    "test:firebase":   "node firebase/tests/firebase-control.test.js",
+    "test:studio":     "node studio/tests/studio.test.js",
+    "test:platforms":  "node platforms/tests/platforms.test.js",
+    "test:media":      "node media/tests/media.test.js",
+    "test:tv-station": "node tv-station/tests/tv-station.test.js",
+    "test:hybrid":     "node hybrid/tests/hybrid.test.js",
+    "test:recovery":   "node recovery/tests/recovery.test.js",
+    "test:security":   "node security/tests/security.test.js",
+    "test": "node encoder/tests/shadow-encoder.test.js && node broadcast/tests/broadcast.test.js && node broadcast/tests/fanout.test.js && node ingest/tests/ingest.test.js && node firebase/tests/firebase-control.test.js && node studio/tests/studio.test.js && node platforms/tests/platforms.test.js && node media/tests/media.test.js && node tv-station/tests/tv-station.test.js && node hybrid/tests/hybrid.test.js && node recovery/tests/recovery.test.js && node security/tests/security.test.js",
+    "diagnostics": "node broadcast/tests/run-broadcast-diagnostics.js",
+    "diagnostics:stage2": "node encoder/tests/run-diagnostics.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
